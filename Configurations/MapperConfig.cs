@@ -15,6 +15,7 @@ public class MapperConfig: Profile
     CreateMap<Hospital, UpdateHospitalDto>().ReverseMap();
     
     CreateMap<Address, AddressDto>().ReverseMap();
+    CreateMap<Address, CreateAddressDto>().ReverseMap();
     
   }
 }

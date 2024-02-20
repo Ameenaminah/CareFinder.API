@@ -33,6 +33,7 @@ builder.Services.AddAutoMapper(typeof(MapperConfig));
 
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IHospitalsRepository, HospitalsRepository>();
+builder.Services.AddScoped<IAddressesRepository, AddressesRepository>();
 
 
 var app = builder.Build();
