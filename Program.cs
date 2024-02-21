@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
+// Setting up the Application
 var builder = WebApplication.CreateBuilder(args);
 
 
@@ -20,7 +21,9 @@ builder.Services.AddDbContext<CareFinderDbContext>(options =>
 
 builder.Services.AddIdentityCore<ApiUser>()
     .AddRoles<IdentityRole>()
-    .AddEntityFrameworkStores<CareFinderDbContext>();
+    .AddTokenProvider<DataProtectorTokenProvider<ApiUser>>("CareFinderApi")
+    .AddEntityFrameworkStores<CareFinderDbContext>()
+    .AddDefaultTokenProviders();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -78,7 +81,10 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 
 app.UseCors("AllowAll");
-app.UseRouting();
+// app.UseRouting();
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 

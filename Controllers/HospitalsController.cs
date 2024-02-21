@@ -4,6 +4,7 @@ using CareFinder.API.Data;
 using CareFinder.API.DTOs.Hospital;
 using AutoMapper;
 using CareFinder.API.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CareFinder.API.Controllers
 {
@@ -46,6 +47,7 @@ namespace CareFinder.API.Controllers
         // PUT: api/Hospitals/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> PutHospital(int id, UpdateHospitalDto updateHospitalDto)
         {
             if (id != updateHospitalDto.Id)
@@ -81,6 +83,7 @@ namespace CareFinder.API.Controllers
 
         // POST: api/Hospitals
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Hospital>> PostHospital(CreateHospitalDto createHospital)
         {
             var hospital = _mapper.Map<Hospital>(createHospital);
@@ -92,6 +95,7 @@ namespace CareFinder.API.Controllers
 
         // DELETE: api/Hospitals/5
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteHospital(int id)
         {
             var hospital = await _hospitalsRepository.GetAsync(id);
