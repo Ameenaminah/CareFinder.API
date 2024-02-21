@@ -2,6 +2,7 @@
 using CareFinder.API.Data;
 using CareFinder.API.DTOs.Address;
 using CareFinder.API.DTOs.Hospital;
+using CareFinder.API.DTOs.User;
 
 namespace CareFinder.API.Configurations;
 
@@ -16,7 +17,8 @@ public class MapperConfig: Profile
     
     CreateMap<Address, AddressDto>().ReverseMap();
     CreateMap<Address, CreateAddressDto>().ReverseMap();
-    
+
+    CreateMap<ApiUser, ApiUserDto>().ReverseMap();
   }
 }
 

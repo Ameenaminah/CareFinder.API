@@ -6,6 +6,9 @@ using CareFinder.API.Configurations;
 using CareFinder.API.Interfaces;
 using CareFinder.API;
 using CareFinder.API.Repository;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +17,10 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<CareFinderDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("CareFinderDbConnectionString")));
+
+builder.Services.AddIdentityCore<ApiUser>()
+    .AddRoles<IdentityRole>()
+    .AddEntityFrameworkStores<CareFinderDbContext>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -31,10 +38,31 @@ builder.Host.UseSerilog((context, logger) => logger.WriteTo.Console().ReadFrom.C
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
 
+//Register the Injected files in Program.cs so that it can be used in the app
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped<IHospitalsRepository, HospitalsRepository>();
 builder.Services.AddScoped<IAddressesRepository, AddressesRepository>();
+builder.Services.AddScoped<IAuthManager, AuthManager>();
 
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//Bearer
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero,
+        ValidIssuer = builder.Configuration["JwtSettings:Issuer"],
+        ValidAudience = builder.Configuration["JwtSettings:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JwtSettings:Key"]))
+    };
+});
 
 var app = builder.Build();
 
