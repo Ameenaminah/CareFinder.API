@@ -1,14 +1,17 @@
 using Serilog;
-using CareFinder.API.Data;
 using System.Text;
-using Microsoft.EntityFrameworkCore;
-using CareFinder.API.Configurations;
-using CareFinder.API.Interfaces;
-using CareFinder.API;
-using CareFinder.API.Repository;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using CareFinder.API;
+using CareFinder.API.Configurations;
+using CareFinder.API.Data;
+using CareFinder.API.Interfaces;
+using CareFinder.API.Middleware;
+using CareFinder.API.Repository;
+using Microsoft.AspNetCore.OData;
 
 // Setting up the Application
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +28,6 @@ builder.Services.AddIdentityCore<ApiUser>()
     .AddEntityFrameworkStores<CareFinderDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -37,6 +39,26 @@ builder.Services.AddCors(options =>
         .AllowAnyMethod()
     );
 });
+
+builder.Services.AddApiVersioning(options =>
+{
+    options.AssumeDefaultVersionWhenUnspecified = true;
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1, 0);
+    options.ReportApiVersions = true;
+    options.ApiVersionReader = ApiVersionReader.Combine(
+        new QueryStringApiVersionReader("api-version"),
+        new HeaderApiVersionReader("X-Version"),
+        new MediaTypeApiVersionReader("ver")
+    );
+});
+
+builder.Services.AddVersionedApiExplorer(
+    options =>
+    {
+        options.GroupNameFormat = "'v'VVV";
+        options.SubstituteApiVersionInUrl = true;
+    });
+
 builder.Host.UseSerilog((context, logger) => logger.WriteTo.Console().ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddAutoMapper(typeof(MapperConfig));
@@ -67,6 +89,17 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddResponseCaching(options =>
+{
+    options.MaximumBodySize = 1024;
+    options.UseCaseSensitivePaths = true;
+});
+
+builder.Services.AddControllers().AddOData(options =>
+{
+    options.Select().Filter().OrderBy();
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -76,12 +109,29 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
+
+app.UseHttpsRedirection();
 
 app.UseSerilogRequestLogging();
 
 app.UseCors("AllowAll");
-// app.UseRouting();
+
+app.UseResponseCaching();
+
+app.Use(async (context, next) =>
+{
+    context.Response.GetTypedHeaders().CacheControl =
+    new Microsoft.Net.Http.Headers.CacheControlHeaderValue()
+    {
+        Public = true,
+        MaxAge = TimeSpan.FromSeconds(10),
+    };
+
+    context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] = new string[] { "Accept-Encoding" };
+    await next();
+
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

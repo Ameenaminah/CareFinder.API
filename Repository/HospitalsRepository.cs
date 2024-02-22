@@ -1,4 +1,5 @@
-﻿using CareFinder.API.Data;
+﻿using AutoMapper;
+using CareFinder.API.Data;
 using CareFinder.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,7 +8,7 @@ namespace CareFinder.API.Repository;
 public class HospitalsRepository : GenericRepository<Hospital>, IHospitalsRepository
 {
   private readonly CareFinderDbContext _context;
-  public HospitalsRepository(CareFinderDbContext context) : base(context)
+  public HospitalsRepository(CareFinderDbContext context, IMapper mapper) : base(context, mapper)
   {
     this._context = context;
   }

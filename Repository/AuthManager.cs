@@ -46,11 +46,14 @@ namespace CareFinder.API.Repository
 
     public async Task<AuthResponseDto> Login(LoginDto loginDto)
     {
+      _logger.LogInformation($"Looking for user with email: {loginDto.Email}");
+
       _user = await _userManager.FindByEmailAsync(loginDto.Email);
       var isValidCredentials = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
 
       if (_user is null || isValidCredentials is false)
       {
+        _logger.LogWarning($"User with email {loginDto.Email} was not found");
         return null;
       }
 

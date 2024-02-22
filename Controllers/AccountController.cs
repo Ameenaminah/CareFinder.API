@@ -17,9 +17,10 @@ public class AccountController : ControllerBase
   private readonly IAuthManager _authManager;
   private readonly ILogger<AccountController> _logger;
 
-  public AccountController(IAuthManager authManager)
+  public AccountController(IAuthManager authManager, ILogger<AccountController> logger)
   {
     this._authManager = authManager;
+    this._logger = logger;
   }
 
   // POST api/account/register
@@ -48,8 +49,8 @@ public class AccountController : ControllerBase
     }
     catch (Exception ex)
     {
-      _logger.LogError($"An error occurred while trying to register user with email : {apiUserDto.Email}", ex.Message);
-      return Problem();
+      _logger.LogError($"There was an error encountered when attempting to register the user with the email: {apiUserDto.Email}", ex.Message);
+      return Problem($"Something Went Wrong in the {nameof(Register)}. Please contact support.", statusCode: 500);
     }
   }
 
@@ -61,13 +62,23 @@ public class AccountController : ControllerBase
   [ProducesResponseType(StatusCodes.Status200OK)]
   public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
   {
-    var authResponse = await _authManager.Login(loginDto);
-
-    if (authResponse == null)
+    try
     {
-      return Unauthorized();
+      var authResponse = await _authManager.Login(loginDto);
+
+      if (authResponse is null)
+      {
+        return Unauthorized();
+      }
+      return Ok(authResponse);
     }
-    return Ok(authResponse);
+    catch (Exception ex)
+    {
+      _logger.LogError($"Something Went Wrong in the {nameof(Login)}.", ex);
+
+      return Problem($"Something Went Wrong in the {nameof(Login)}. Please contact support.", statusCode: 500);
+    }
+
   }
 
   [HttpPost]

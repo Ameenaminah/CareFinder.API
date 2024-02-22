@@ -1,4 +1,7 @@
-﻿using CareFinder.API.Data;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CareFinder.API.Data;
+using CareFinder.API.DTOs;
 using CareFinder.API.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,10 +10,13 @@ namespace CareFinder.API;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
   private readonly CareFinderDbContext _context;
-  public GenericRepository(CareFinderDbContext context)
+  private readonly IMapper _mapper;
+  public GenericRepository(CareFinderDbContext context, IMapper mapper)
   {
     this._context = context;
+    this._mapper = mapper;
   }
+
   public async Task<T> AddAsync(T entity)
   {
     await _context.AddAsync(entity);
@@ -51,4 +57,24 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
    _context.Update(entity);
    await _context.SaveChangesAsync();
   }
+
+  public async Task<PagedResult<TResult>> GetAllAsync<TResult>(QueryParameters queryParameters)
+  {
+    var totalSize = await _context.Set<T>().CountAsync();
+    var items = await _context.Set<T>()
+        .Skip(queryParameters.StartIndex)
+        .Take(queryParameters.PageSize)
+        .ProjectTo<TResult>(_mapper.ConfigurationProvider)
+        .ToListAsync();
+
+    return new PagedResult<TResult>
+    {
+      Items = items,
+      PageNumber = queryParameters.PageNumber,
+      RecordNumber = queryParameters.PageSize,
+      TotalCount = totalSize
+
+    };
+  }
+
 }
