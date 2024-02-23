@@ -6,7 +6,7 @@ using CareFinder.API.DTOs.User;
 
 namespace CareFinder.API.Configurations;
 
-public class MapperConfig: Profile
+public class MapperConfig : Profile
 {
   public MapperConfig()
   {
@@ -14,7 +14,7 @@ public class MapperConfig: Profile
     CreateMap<Hospital, GetHospitalDto>().ReverseMap();
     CreateMap<Hospital, GetHospitalDetailsDto>().ReverseMap();
     CreateMap<Hospital, UpdateHospitalDto>().ReverseMap();
-    
+
     CreateMap<Address, AddressDto>().ReverseMap();
     CreateMap<Address, CreateAddressDto>().ReverseMap();
 

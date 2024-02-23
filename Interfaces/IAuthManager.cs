@@ -8,9 +8,8 @@ namespace CareFinder.API.Interfaces
   {
     Task<AuthResponseDto> Login(LoginDto loginDto);
     Task<IEnumerable<IdentityError>> Register(ApiUserDto userDto);
-    // Task<IEnumerable<IdentityError>> RegisterAdmin(ApiUserDto userDto);
-     Task<string> CreateRefreshToken();
-     Task<AuthResponseDto> VerifyRefreshToken(AuthResponseDto request);
-
+    Task<IEnumerable<IdentityError>> RegisterAdmin(ApiUserDto userDto);
+    Task<string> CreateRefreshToken();
+    Task<AuthResponseDto> VerifyRefreshToken(AuthResponseDto request);
   }
 }

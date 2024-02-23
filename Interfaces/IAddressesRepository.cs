@@ -2,7 +2,7 @@
 
 namespace CareFinder.API.Interfaces;
 
-public interface IAddressesRepository: IGenericRepository<Address>
+public interface IAddressesRepository : IGenericRepository<Address>
 {
 
 }

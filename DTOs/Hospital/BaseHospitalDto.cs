@@ -2,7 +2,7 @@
 
 namespace CareFinder.API.DTOs.Hospital;
 
-public  class BaseHospitalDto
+public class BaseHospitalDto
 {
   [Required]
   public string Name { get; set; }

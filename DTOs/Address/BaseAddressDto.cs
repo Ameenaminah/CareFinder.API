@@ -9,8 +9,9 @@ public abstract class BaseAddressDto
 
   [Required]
   public string State { get; set; }
+
   public string PostalCode { get; set; }
-  
+
   [Required]
   public int HospitalId { get; set; }
 }
