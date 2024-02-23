@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.OData;
 // Setting up the Application
 var builder = WebApplication.CreateBuilder(args);
 
-
 // Add services to the container.
 
 builder.Services.AddDbContext<CareFinderDbContext>(options =>
@@ -29,6 +28,7 @@ builder.Services.AddIdentityCore<ApiUser>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors(options =>
@@ -73,7 +73,6 @@ builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;//Bearer
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
 }).AddJwtBearer(options =>
 {
     options.TokenValidationParameters = new TokenValidationParameters
@@ -134,6 +133,7 @@ app.Use(async (context, next) =>
 });
 
 app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();

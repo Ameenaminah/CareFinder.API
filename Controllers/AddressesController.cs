@@ -52,7 +52,7 @@ namespace CareFinder.API.Controllers
             }
 
             var address = await _addressesRepository.GetAsync(id);
-            if (address == null)
+            if (address is null)
             {
                 return NotFound();
             }

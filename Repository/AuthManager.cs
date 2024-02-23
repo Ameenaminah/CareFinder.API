@@ -1,5 +1,4 @@
-﻿using System;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
@@ -44,16 +43,33 @@ namespace CareFinder.API.Repository
       return result.Errors;
     }
 
+    public async Task<IEnumerable<IdentityError>> RegisterAdmin(ApiUserDto userDto)
+    {
+      _user = _mapper.Map<ApiUser>(userDto);
+      _user.UserName = userDto.Email;
+
+      var result = await _userManager.CreateAsync(_user, userDto.Password);
+
+      if (result.Succeeded)
+      {
+        await _userManager.AddToRoleAsync(_user, "User");
+        await _userManager.AddToRoleAsync(_user, "Administrator");
+      }
+
+      return result.Errors;
+    }
+
     public async Task<AuthResponseDto> Login(LoginDto loginDto)
     {
       _logger.LogInformation($"Looking for user with email: {loginDto.Email}");
 
-      _user = await _userManager.FindByEmailAsync(loginDto.Email);
+      _user = await _userManager.FindByEmailAsync(loginDto.Email);   
       var isValidCredentials = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
 
       if (_user is null || isValidCredentials is false)
       {
         _logger.LogWarning($"User with email {loginDto.Email} was not found");
+        
         return null;
       }
 

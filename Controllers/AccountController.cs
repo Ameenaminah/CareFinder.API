@@ -50,6 +50,7 @@ public class AccountController : ControllerBase
     catch (Exception ex)
     {
       _logger.LogError($"There was an error encountered when attempting to register the user with the email: {apiUserDto.Email}", ex.Message);
+      
       return Problem($"Something Went Wrong in the {nameof(Register)}. Please contact support.", statusCode: 500);
     }
   }
@@ -62,23 +63,17 @@ public class AccountController : ControllerBase
   [ProducesResponseType(StatusCodes.Status200OK)]
   public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
   {
-    try
-    {
-      var authResponse = await _authManager.Login(loginDto);
+    _logger.LogInformation($"Login Attempt for {loginDto.Email} ");
 
-      if (authResponse is null)
-      {
-        return Unauthorized();
-      }
-      return Ok(authResponse);
-    }
-    catch (Exception ex)
-    {
-      _logger.LogError($"Something Went Wrong in the {nameof(Login)}.", ex);
+    var authResponse = await _authManager.Login(loginDto);
 
-      return Problem($"Something Went Wrong in the {nameof(Login)}. Please contact support.", statusCode: 500);
+    if (authResponse is null)
+    {
+      _logger.LogError($"cannot find user with email : {loginDto.Email}");
+      return Unauthorized();
     }
 
+    return Ok(authResponse);
   }
 
   [HttpPost]

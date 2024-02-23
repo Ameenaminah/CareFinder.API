@@ -17,13 +17,11 @@ namespace CareFinder.API.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IHospitalsRepository _hospitalsRepository;
-        private readonly ILogger<HospitalsController> _logger;
 
-        public HospitalsController(IMapper mapper, IHospitalsRepository hospitalsRepository, ILogger<HospitalsController> logger)
+        public HospitalsController(IMapper mapper, IHospitalsRepository hospitalsRepository)
         {
             this._mapper = mapper;
             this._hospitalsRepository = hospitalsRepository;
-            this._logger = logger;
         }
 
         // GET: api/Hospitals

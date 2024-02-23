@@ -16,6 +16,5 @@ public class HospitalsRepository : GenericRepository<Hospital>, IHospitalsReposi
   public async Task<Hospital> GetDetails(int id)
   {
     return await _context.Hospitals.Include(q => q.Addresses).FirstOrDefaultAsync(q => q.Id == id);
-    
   }
 }
