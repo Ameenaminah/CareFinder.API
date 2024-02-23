@@ -6,5 +6,4 @@ public class CreateHospitalDto : BaseHospitalDto
 {
   [Required]
   public string About { get; set; }
-
 }

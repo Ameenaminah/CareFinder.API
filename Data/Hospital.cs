@@ -10,6 +10,6 @@ public class Hospital
   public string Email { get; set; } 
   public string PhoneNumber { get; set; } 
   public string About { get; set; } 
-  public string Image { get; set; } 
+  public string Website { get; set; } 
   public ICollection<Address> Addresses { get; set; }
 }

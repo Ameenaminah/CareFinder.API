@@ -11,26 +11,26 @@ public class AddressConfiguration : IEntityTypeConfiguration<Address>
   new Address
   {
     Id = 1,
-    AddressLine = "22, saliu street",
+    AddressLine = "20A Thompson Ave, Ikoyi",
     State = "Lagos",
-    PostalCode = "1111",
-    HospitalId = 3,
-  },
-  new Address
-  {
-    Id = 2,
-    AddressLine = "24, saliu street",
-    State = "Ogun",
-    PostalCode = "1121",
+    PostalCode = "106104",
     HospitalId = 1,
   },
   new Address
   {
-    Id = 3,
-    AddressLine = "26, saliu street",
+    Id = 2,
+    AddressLine = "3/5 Adetola Ayeni St, off Freedom Way, Lekki Phase I",
     State = "Lagos",
-    PostalCode = "1111",
+    PostalCode = "105102",
     HospitalId = 2,
+  },
+  new Address
+  {
+    Id = 3,
+    AddressLine = "39 Isaac John str, GRA,Ikeja",
+    State = "Lagos",
+    PostalCode = "106104",
+    HospitalId = 3,
   }
 );
   }

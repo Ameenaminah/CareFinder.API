@@ -25,7 +25,7 @@ namespace CareFinder.API.Controllers
         }
 
         // GET: api/Hospitals
-        [HttpGet("allHospitals")]
+        [HttpGet("all")]
         [EnableQuery]
         public async Task<ActionResult<IEnumerable<GetHospitalDto>>> GetHospitals()
         {

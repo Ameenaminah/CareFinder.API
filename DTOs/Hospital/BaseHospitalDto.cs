@@ -17,4 +17,6 @@ public class BaseHospitalDto
 
   [Required]
   public string PhoneNumber { get; set; }
+
+  public string Website { get; set; }
 }

@@ -55,6 +55,38 @@ public class AccountController : ControllerBase
     }
   }
 
+  // POST api/account/register
+  [HttpPost]
+  [Route("registerAdmin")]
+  [ProducesResponseType(StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+  [ProducesResponseType(StatusCodes.Status200OK)]
+  public async Task<IActionResult> RegisterAdmin([FromBody] ApiUserDto apiUserDto)
+  {
+    try
+    {
+      var errors = await _authManager.RegisterAdmin(apiUserDto);
+
+      if (errors.Any())
+      {
+        foreach (var error in errors)
+        {
+          ModelState.AddModelError(error.Code, error.Description);
+        }
+
+        return BadRequest(errors);
+      }
+
+      return Ok();
+    }
+    catch (Exception ex)
+    {
+      _logger.LogError($"There was an error encountered when attempting to register the user with the email: {apiUserDto.Email}", ex.Message);
+
+      return Problem($"Something Went Wrong in the {nameof(Register)}. Please contact support.", statusCode: 500);
+    }
+  }
+
   // POST api/auth/login
   [HttpPost]
   [Route("login")]
