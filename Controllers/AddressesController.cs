@@ -79,12 +79,12 @@ namespace CareFinder.API.Controllers
 
         // POST: api/Addresses
         [HttpPost]
-        public async Task<ActionResult<Address>> PostAddress(CreateAddressDto addressDto)
+        public async Task<ActionResult> PostAddress(CreateAddressDto addressDto)
         {
             var address = _mapper.Map<Address>(addressDto);
             await _addressesRepository.AddAsync(address);
 
-            return CreatedAtAction("GetAddress", new { id = address.Id }, address);
+            return CreatedAtAction("GetAddress", new { id = address.Id }, address.Id);
         }
 
         // DELETE: api/Addresses/5

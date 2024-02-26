@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareFinder.API.Migrations
 {
     [DbContext(typeof(CareFinderDbContext))]
-    [Migration("20240220235252_AddedIdentityTables")]
-    partial class AddedIdentityTables
+    [Migration("20240223223748_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,25 +55,25 @@ namespace CareFinder.API.Migrations
                         new
                         {
                             Id = 1,
-                            AddressLine = "22, saliu street",
-                            HospitalId = 3,
-                            PostalCode = "1111",
+                            AddressLine = "20A Thompson Ave, Ikoyi",
+                            HospitalId = 1,
+                            PostalCode = "106104",
                             State = "Lagos"
                         },
                         new
                         {
                             Id = 2,
-                            AddressLine = "24, saliu street",
-                            HospitalId = 1,
-                            PostalCode = "1121",
-                            State = "Ogun"
+                            AddressLine = "3/5 Adetola Ayeni St, off Freedom Way, Lekki Phase I",
+                            HospitalId = 2,
+                            PostalCode = "105102",
+                            State = "Lagos"
                         },
                         new
                         {
                             Id = 3,
-                            AddressLine = "26, saliu street",
-                            HospitalId = 2,
-                            PostalCode = "1111",
+                            AddressLine = "39 Isaac John str, GRA,Ikeja",
+                            HospitalId = 3,
+                            PostalCode = "106104",
                             State = "Lagos"
                         });
                 });
@@ -162,9 +162,6 @@ namespace CareFinder.API.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
-                    b.Property<string>("Image")
-                        .HasColumnType("text");
-
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -177,6 +174,9 @@ namespace CareFinder.API.Migrations
                     b.Property<string>("Specialization")
                         .HasColumnType("text");
 
+                    b.Property<string>("Website")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.ToTable("Hospitals");
@@ -185,32 +185,35 @@ namespace CareFinder.API.Migrations
                         new
                         {
                             Id = 1,
-                            About = "asw dd ee eee fff vvv",
-                            Email = "aaa@kk.com",
-                            Image = "ffff",
-                            Name = "Unilorin Teaching Hospital",
-                            PhoneNumber = "12345",
-                            Specialization = "General"
+                            About = "FCC Healthcare is a comprehensive cardiovascular and preventative health care hospital that empowers patients in Nigeria with their health care needs. For over 10 years, we have been delivering the highest quality comprehensive care in Nigeria by innovative use of modern technology and a commitment to local capacity building, education, and collaborative research. We put the patient first, and we have built a healthy medical environment to provide patients with comprehensive care, and deliver excellence in healthcare every day, and not just on some days.",
+                            Email = "info@firstcardiology.org",
+                            Name = "First Cardiology Consultants",
+                            Ownership = "Private",
+                            PhoneNumber = "08082114266",
+                            Specialization = "Cardiology",
+                            Website = "https://firstcardiology.org/"
                         },
                         new
                         {
                             Id = 2,
-                            About = "asw dd ee eee fff vvv",
-                            Email = "aaa@kk.com",
-                            Image = "sssssss",
-                            Name = "UniLag Teaching Hospital",
-                            PhoneNumber = "12345",
-                            Specialization = "General"
+                            About = "LECC is a multidisciplinary cardiovascular and cardiac rehabilitation 24/7 facility focused on the treatment and management of cardiovascular diseases and trigger diseases using both invasive and non-invasive procedures, as well as preventive cardiology. Our skilled and experienced cardiologists, vascular and cardiothoraxic surgeons, electrophysiologists, interventional cardiologists and support staff are committed to the treatment and prevention of heart diseases through innovative, state-of-the-art technology. Our support staff include stroke specialists, sleep specialists, endocrinologists (diabetes), nutritionists, physiotherapists, pulmonologists and respiratory physicians.",
+                            Email = "admin@thelecc.com",
+                            Name = "Lagos Executive Cardiovascular Centre",
+                            Ownership = "Private",
+                            PhoneNumber = "08173651737",
+                            Specialization = "Endocrinology & Diabetes",
+                            Website = "https://thelecc.com/"
                         },
                         new
                         {
                             Id = 3,
-                            About = "asw dd ee eee fff vvv",
-                            Email = "aaa@kk.com",
-                            Image = "sssssss",
-                            Name = "UniAbuja Teaching Hospital",
-                            PhoneNumber = "12345",
-                            Specialization = "General"
+                            About = "Reddington is a 5-star, one-stop facility providing comprehensive solutions to your healthcare needs. The facility was set up as a tertiary centre with multiple specialties, committed to deliver excellent service in the medical field, with all departments supported by the latest technology and state-of-the-art medical equipment.",
+                            Email = "info@reddingtonhospital.com",
+                            Name = "Reddington Hospital",
+                            Ownership = "Private",
+                            PhoneNumber = "09165359769",
+                            Specialization = "General",
+                            Website = "https://reddingtonhospital.com/"
                         });
                 });
 
@@ -238,6 +241,20 @@ namespace CareFinder.API.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "9a0ab47d-cf94-4842-bbfe-0bf7abe2a4bb",
+                            Name = "Administrator",
+                            NormalizedName = "ADMINISTRATOR"
+                        },
+                        new
+                        {
+                            Id = "41e1e3e5-82cd-4934-9ddf-a706592cb3a0",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -59,14 +59,17 @@ namespace CareFinder.API.Controllers
 
         // POST: api/Hospitals
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Hospital>> PostHospital(CreateHospitalDto createHospital)
         {
             var hospital = _mapper.Map<Hospital>(createHospital);
 
             await _hospitalsRepository.AddAsync(hospital);
 
-            return CreatedAtAction("GetHospital", new { id = hospital.Id }, hospital);
+            Console.WriteLine(hospital.Id);
+            Console.WriteLine("Add something");
+
+            return CreatedAtAction("GetHospital", new { id = hospital.Id }, hospital.Id);
         }
 
         // PUT: api/Hospitals/5
@@ -106,9 +109,7 @@ namespace CareFinder.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Hospitals/5
-        [HttpDelete("{id}")]
-        [Authorize(Roles = "Administrator")]
+        // DELETE: api/Hospitals/5 [HttpDelete("{id}")] [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteHospital(int id)
         {
             var hospital = await _hospitalsRepository.GetAsync(id);

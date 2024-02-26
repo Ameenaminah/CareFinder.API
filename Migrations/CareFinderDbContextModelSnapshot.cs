@@ -159,6 +159,9 @@ namespace CareFinder.API.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("text");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
@@ -242,13 +245,13 @@ namespace CareFinder.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5d2b820c-771d-4a36-8a49-b33be0589289",
+                            Id = "11103725-0c3a-4aad-8718-a6766b21ac18",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "6156b272-e60b-4778-af48-2146df1f339c",
+                            Id = "a0a5f676-c770-4ef3-8225-e2b83e60aed6",
                             Name = "User",
                             NormalizedName = "USER"
                         });
