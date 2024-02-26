@@ -187,6 +187,7 @@ namespace CareFinder.API.Migrations
                             Id = 1,
                             About = "FCC Healthcare is a comprehensive cardiovascular and preventative health care hospital that empowers patients in Nigeria with their health care needs. For over 10 years, we have been delivering the highest quality comprehensive care in Nigeria by innovative use of modern technology and a commitment to local capacity building, education, and collaborative research. We put the patient first, and we have built a healthy medical environment to provide patients with comprehensive care, and deliver excellence in healthcare every day, and not just on some days.",
                             Email = "info@firstcardiology.org",
+                            Image = "https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-hospital-icon-png-image_1922195.jpg",
                             Name = "First Cardiology Consultants",
                             Ownership = "Private",
                             PhoneNumber = "08082114266",
@@ -198,6 +199,7 @@ namespace CareFinder.API.Migrations
                             Id = 2,
                             About = "LECC is a multidisciplinary cardiovascular and cardiac rehabilitation 24/7 facility focused on the treatment and management of cardiovascular diseases and trigger diseases using both invasive and non-invasive procedures, as well as preventive cardiology. Our skilled and experienced cardiologists, vascular and cardiothoraxic surgeons, electrophysiologists, interventional cardiologists and support staff are committed to the treatment and prevention of heart diseases through innovative, state-of-the-art technology. Our support staff include stroke specialists, sleep specialists, endocrinologists (diabetes), nutritionists, physiotherapists, pulmonologists and respiratory physicians.",
                             Email = "admin@thelecc.com",
+                            Image = "https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-hospital-icon-png-image_1922195.jpg",
                             Name = "Lagos Executive Cardiovascular Centre",
                             Ownership = "Private",
                             PhoneNumber = "08173651737",
@@ -209,6 +211,7 @@ namespace CareFinder.API.Migrations
                             Id = 3,
                             About = "Reddington is a 5-star, one-stop facility providing comprehensive solutions to your healthcare needs. The facility was set up as a tertiary centre with multiple specialties, committed to deliver excellent service in the medical field, with all departments supported by the latest technology and state-of-the-art medical equipment.",
                             Email = "info@reddingtonhospital.com",
+                            Image = "https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-hospital-icon-png-image_1922195.jpg",
                             Name = "Reddington Hospital",
                             Ownership = "Private",
                             PhoneNumber = "09165359769",
@@ -245,13 +248,13 @@ namespace CareFinder.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "11103725-0c3a-4aad-8718-a6766b21ac18",
+                            Id = "07af3aae-739e-4b84-a4ee-3f33c1dfbbc9",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "a0a5f676-c770-4ef3-8225-e2b83e60aed6",
+                            Id = "0fe8811d-ef0f-4c9a-bd97-bbb5616666f3",
                             Name = "User",
                             NormalizedName = "USER"
                         });

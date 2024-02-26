@@ -62,6 +62,12 @@ namespace CareFinder.API.Controllers
         // [Authorize(Roles = "Administrator")]
         public async Task<ActionResult<Hospital>> PostHospital(CreateHospitalDto createHospital)
         {
+            if (await _hospitalsRepository.ExistsByNameAsync(createHospital.Name))
+            {
+                ModelState.AddModelError(createHospital.Name, "Hospital with this name already exists");
+                return BadRequest(ModelState);
+            }
+
             var hospital = _mapper.Map<Hospital>(createHospital);
 
             await _hospitalsRepository.AddAsync(hospital);

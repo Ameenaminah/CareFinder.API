@@ -81,6 +81,12 @@ namespace CareFinder.API.Controllers
         [HttpPost]
         public async Task<ActionResult> PostAddress(CreateAddressDto addressDto)
         {
+            if (await _addressesRepository.ExistsByNameAsync(addressDto.AddressLine))
+            {
+                ModelState.AddModelError(addressDto.AddressLine, "Hospital with this name already exists");
+                return BadRequest(ModelState);
+            }
+
             var address = _mapper.Map<Address>(addressDto);
             await _addressesRepository.AddAsync(address);
 

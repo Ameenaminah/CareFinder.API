@@ -10,6 +10,7 @@ public interface IGenericRepository<T> where T : class
   Task DeleteAsync(int id);
   Task UpdateAsync(T entity);
   Task<bool> Exists(int id);
+  Task<bool> ExistsByNameAsync(string name);
   Task<PagedResult<TResult>> GetAllAsync<TResult>(QueryParameters queryParameters);
 
 }

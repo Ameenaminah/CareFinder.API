@@ -77,4 +77,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     };
   }
 
+  public async Task<bool> ExistsByNameAsync(string name)
+  {
+    return await _context.Set<Hospital>().AnyAsync(h => h.Name == name);
+  }
 }
