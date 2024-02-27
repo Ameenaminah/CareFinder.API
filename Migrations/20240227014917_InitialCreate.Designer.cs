@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CareFinder.API.Migrations
 {
     [DbContext(typeof(CareFinderDbContext))]
-    [Migration("20240226213219_InitialCreate")]
+    [Migration("20240227014917_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -27,17 +27,14 @@ namespace CareFinder.API.Migrations
 
             modelBuilder.Entity("CareFinder.API.Data.Address", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<string>("AddressLine")
                         .HasColumnType("text");
 
-                    b.Property<int>("HospitalId")
-                        .HasColumnType("integer");
+                    b.Property<string>("HospitalId")
+                        .HasColumnType("text");
 
                     b.Property<string>("PostalCode")
                         .HasColumnType("text");
@@ -54,25 +51,25 @@ namespace CareFinder.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             AddressLine = "20A Thompson Ave, Ikoyi",
-                            HospitalId = 1,
+                            HospitalId = "1",
                             PostalCode = "106104",
                             State = "Lagos"
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "2",
                             AddressLine = "3/5 Adetola Ayeni St, off Freedom Way, Lekki Phase I",
-                            HospitalId = 2,
+                            HospitalId = "2",
                             PostalCode = "105102",
                             State = "Lagos"
                         },
                         new
                         {
-                            Id = 3,
+                            Id = "3",
                             AddressLine = "39 Isaac John str, GRA,Ikeja",
-                            HospitalId = 3,
+                            HospitalId = "3",
                             PostalCode = "106104",
                             State = "Lagos"
                         });
@@ -150,11 +147,8 @@ namespace CareFinder.API.Migrations
 
             modelBuilder.Entity("CareFinder.API.Data.Hospital", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
 
                     b.Property<string>("About")
                         .HasColumnType("text");
@@ -187,7 +181,7 @@ namespace CareFinder.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
+                            Id = "1",
                             About = "FCC Healthcare is a comprehensive cardiovascular and preventative health care hospital that empowers patients in Nigeria with their health care needs. For over 10 years, we have been delivering the highest quality comprehensive care in Nigeria by innovative use of modern technology and a commitment to local capacity building, education, and collaborative research. We put the patient first, and we have built a healthy medical environment to provide patients with comprehensive care, and deliver excellence in healthcare every day, and not just on some days.",
                             Email = "info@firstcardiology.org",
                             Image = "https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-hospital-icon-png-image_1922195.jpg",
@@ -199,7 +193,7 @@ namespace CareFinder.API.Migrations
                         },
                         new
                         {
-                            Id = 2,
+                            Id = "2",
                             About = "LECC is a multidisciplinary cardiovascular and cardiac rehabilitation 24/7 facility focused on the treatment and management of cardiovascular diseases and trigger diseases using both invasive and non-invasive procedures, as well as preventive cardiology. Our skilled and experienced cardiologists, vascular and cardiothoraxic surgeons, electrophysiologists, interventional cardiologists and support staff are committed to the treatment and prevention of heart diseases through innovative, state-of-the-art technology. Our support staff include stroke specialists, sleep specialists, endocrinologists (diabetes), nutritionists, physiotherapists, pulmonologists and respiratory physicians.",
                             Email = "admin@thelecc.com",
                             Image = "https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-hospital-icon-png-image_1922195.jpg",
@@ -211,7 +205,7 @@ namespace CareFinder.API.Migrations
                         },
                         new
                         {
-                            Id = 3,
+                            Id = "3",
                             About = "Reddington is a 5-star, one-stop facility providing comprehensive solutions to your healthcare needs. The facility was set up as a tertiary centre with multiple specialties, committed to deliver excellent service in the medical field, with all departments supported by the latest technology and state-of-the-art medical equipment.",
                             Email = "info@reddingtonhospital.com",
                             Image = "https://png.pngtree.com/png-vector/20191030/ourmid/pngtree-hospital-icon-png-image_1922195.jpg",
@@ -251,13 +245,13 @@ namespace CareFinder.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "07af3aae-739e-4b84-a4ee-3f33c1dfbbc9",
+                            Id = "22ee5cba-fd54-4db4-a4f6-8ae3f3649c66",
                             Name = "Administrator",
                             NormalizedName = "ADMINISTRATOR"
                         },
                         new
                         {
-                            Id = "0fe8811d-ef0f-4c9a-bd97-bbb5616666f3",
+                            Id = "a47bea78-6d2d-4a4f-a2da-9de29457aaad",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -373,9 +367,7 @@ namespace CareFinder.API.Migrations
                 {
                     b.HasOne("CareFinder.API.Data.Hospital", "Hospital")
                         .WithMany("Addresses")
-                        .HasForeignKey("HospitalId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("HospitalId");
 
                     b.Navigation("Hospital");
                 });

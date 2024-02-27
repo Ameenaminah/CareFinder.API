@@ -2,5 +2,5 @@
 
 public class AddressDto : BaseAddressDto
 {
-  public int Id { get; set; }
+  public string Id { get; set; }
 }

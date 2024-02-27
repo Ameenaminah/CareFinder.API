@@ -10,7 +10,7 @@ public class HospitalConfiguration : IEntityTypeConfiguration<Hospital>
     builder.HasData(
   new Hospital
   {
-    Id = 1,
+    Id = "1",
     Name = "First Cardiology Consultants",
     Specialization = "Cardiology",
     Email = "info@firstcardiology.org",
@@ -21,7 +21,7 @@ public class HospitalConfiguration : IEntityTypeConfiguration<Hospital>
   },
   new Hospital
   {
-    Id = 2,
+    Id = "2",
     Name = "Lagos Executive Cardiovascular Centre",
     Specialization = "Endocrinology & Diabetes",
     Email = "admin@thelecc.com",
@@ -32,7 +32,7 @@ public class HospitalConfiguration : IEntityTypeConfiguration<Hospital>
   },
   new Hospital
   {
-    Id = 3,
+    Id = "3",
     Name = "Reddington Hospital",
     Specialization = "General",
     Email = "info@reddingtonhospital.com",

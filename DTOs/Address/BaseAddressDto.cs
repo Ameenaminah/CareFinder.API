@@ -13,5 +13,5 @@ public abstract class BaseAddressDto
   public string PostalCode { get; set; }
 
   [Required]
-  public int HospitalId { get; set; }
+  public string HospitalId { get; set; }
 }

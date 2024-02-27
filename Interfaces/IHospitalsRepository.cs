@@ -4,5 +4,5 @@ namespace CareFinder.API.Interfaces;
 
 public interface IHospitalsRepository : IGenericRepository<Hospital>
 {
-  Task<Hospital> GetDetails(int id);
+  Task<Hospital> GetDetails(string id);
 }
