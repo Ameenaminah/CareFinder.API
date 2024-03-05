@@ -13,7 +13,7 @@ public class HospitalsRepository : GenericRepository<Hospital>, IHospitalsReposi
     this._context = context;
   }
 
-  public async Task<Hospital> GetDetails(string id)
+  public async Task<Hospital> GetDetails(int id)
   {
     return await _context.Hospitals.Include(q => q.Addresses).FirstOrDefaultAsync(q => q.Id == id);
   }

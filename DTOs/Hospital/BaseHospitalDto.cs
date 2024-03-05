@@ -13,10 +13,4 @@ public class BaseHospitalDto
   [Required]
   public string Ownership { get; set; }
 
-  public string Email { get; set; }
-
-  [Required]
-  public string PhoneNumber { get; set; }
-
-  public string Website { get; set; }
 }

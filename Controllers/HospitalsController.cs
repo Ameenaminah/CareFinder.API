@@ -45,7 +45,7 @@ namespace CareFinder.API.Controllers
 
         // GET: api/Hospitals/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<GetHospitalDto>> GetHospital(string id)
+        public async Task<ActionResult<GetHospitalDto>> GetHospital(int id)
         {
             var hospital = await _hospitalsRepository.GetDetails(id);
 
@@ -81,7 +81,7 @@ namespace CareFinder.API.Controllers
         // PUT: api/Hospitals/5
         [HttpPut("{id}")]
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> PutHospital(string id, UpdateHospitalDto updateHospitalDto)
+        public async Task<IActionResult> PutHospital(int id, UpdateHospitalDto updateHospitalDto)
         {
             if (id != updateHospitalDto.Id)
             {
@@ -115,8 +115,10 @@ namespace CareFinder.API.Controllers
             return NoContent();
         }
 
-        // DELETE: api/Hospitals/5 [HttpDelete("{id}")] [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> DeleteHospital(string id)
+        // DELETE: api/Hospitals/5 
+        [HttpDelete("{id}")] 
+        // [Authorize(Roles = "Administrator")]
+        public async Task<IActionResult> DeleteHospital(int id)
         {
             var hospital = await _hospitalsRepository.GetAsync(id);
 
@@ -130,7 +132,7 @@ namespace CareFinder.API.Controllers
             return NoContent();
         }
 
-        private async Task<bool> HospitalExists(string id)
+        private async Task<bool> HospitalExists(int id)
         {
             return await _hospitalsRepository.Exists(id);
         }

@@ -4,7 +4,7 @@ namespace CareFinder.API.DTOs.Hospital;
 
 public class UpdateHospitalDto
 {
-  public string Id { get; set; }
+  public int Id { get; set; }
 
   public string Email { get; set; }
 

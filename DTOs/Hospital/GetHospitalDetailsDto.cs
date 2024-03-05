@@ -2,11 +2,9 @@
 
 namespace CareFinder.API.DTOs.Hospital;
 
-public class GetHospitalDetailsDto : BaseHospitalDto
+public class GetHospitalDetailsDto : CreateHospitalDto
 {
-  public string Id { get; set; }
-  public string About { get; set; }
-  public string Image { get; set; }
+  public int Id { get; set; }
   public ICollection<AddressDto> Addresses { get; set; }
 }
 

@@ -5,7 +5,7 @@ namespace CareFinder.API.DTOs.Hospital;
 
 public class GetHospitalDto : BaseHospitalDto
 {
-  public string Id { get; set; }
+  public int Id { get; set; }
 
   [Required]
   public ICollection<AddressDto> Addresses { get; set; }

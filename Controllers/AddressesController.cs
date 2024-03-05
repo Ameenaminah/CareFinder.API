@@ -30,7 +30,7 @@ namespace CareFinder.API.Controllers
 
         // GET: api/Addresses/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<AddressDto>> GetAddress(string id)
+        public async Task<ActionResult<AddressDto>> GetAddress(int id)
         {
             var address = await _addressesRepository.GetAsync(id);
 
@@ -44,7 +44,7 @@ namespace CareFinder.API.Controllers
 
         // PUT: api/Addresses/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutAddress(string id, AddressDto addressDto)
+        public async Task<IActionResult> PutAddress(int id, AddressDto addressDto)
         {
             if (id != addressDto.Id)
             {
@@ -95,7 +95,7 @@ namespace CareFinder.API.Controllers
 
         // DELETE: api/Addresses/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAddress(string id)
+        public async Task<IActionResult> DeleteAddress(int id)
         {
             var address = await _addressesRepository.GetAsync(id);
             if (address == null)
@@ -108,7 +108,7 @@ namespace CareFinder.API.Controllers
             return NoContent();
         }
 
-        private async Task<bool> AddressExists(string id)
+        private async Task<bool> AddressExists(int id)
         {
             return await _addressesRepository.Exists(id);
         }
