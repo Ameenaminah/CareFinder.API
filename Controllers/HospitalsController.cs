@@ -118,7 +118,11 @@ namespace CareFinder.API.Controllers
 
                 // Create mailto link with subject, body, and attached PDF
                 var subject = "List of Hospitals";
-                var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n[Download PDF](data:application/pdf;base64," + Convert.ToBase64String(pdfBytes) + ")";
+                // var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n[Download PDF](data:application/pdf;base64," + Convert.ToBase64String(pdfBytes) + ")";
+
+                var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n";
+                var downloadLink = $"data:application/pdf;base64,{base64Pdf}";
+                body += $"[Download PDF]({downloadLink})";
 
                 // Encode the entire mailto link as a URL-encoded string
                 var mailtoLink = $"mailto:?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
