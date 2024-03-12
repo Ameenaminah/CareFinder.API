@@ -128,10 +128,7 @@ namespace CareFinder.API.Controllers
 
 
             }
-
-
         }
-
 
         // GET: api/Hospitals/5
         [HttpGet("{id}")]
@@ -149,7 +146,7 @@ namespace CareFinder.API.Controllers
 
         // POST: api/Hospitals
         [HttpPost]
-        // [Authorize(Roles = "User")]
+        [Authorize(Roles = "User")]
         public async Task<ActionResult<Hospital>> PostHospital(CreateHospitalDto createHospital)
         {
             if (await _hospitalsRepository.ExistsByNameAsync(createHospital.Name))
@@ -207,7 +204,7 @@ namespace CareFinder.API.Controllers
 
         // DELETE: api/Hospitals/5 
         [HttpDelete("{id}")]
-        // [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteHospital(int id)
         {
             var hospital = await _hospitalsRepository.GetAsync(id);
