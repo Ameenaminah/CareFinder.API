@@ -162,7 +162,7 @@ namespace CareFinder.API.Controllers
             Console.WriteLine(hospital.Id);
             Console.WriteLine("Add something");
 
-            return CreatedAtAction("GetHospital", new { id = hospital.Id }, hospital);
+            return CreatedAtAction("GetHospital", new { id = hospital.Id }, CreateHospitalDto);
         }
 
         // PUT: api/Hospitals/5
