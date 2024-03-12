@@ -9,6 +9,4 @@ public class GetHospitalDto : BaseHospitalDto
 
   [Required]
   public ICollection<AddressDto> Addresses { get; set; }
-
 }
-

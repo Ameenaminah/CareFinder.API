@@ -90,7 +90,7 @@ namespace CareFinder.API.Controllers
             var address = _mapper.Map<Address>(addressDto);
             await _addressesRepository.AddAsync(address);
 
-            return CreatedAtAction("GetAddress", new { id = address.Id }, address.Id);
+            return CreatedAtAction("GetAddress", new { id = address.Id }, address);
         }
 
         // DELETE: api/Addresses/5

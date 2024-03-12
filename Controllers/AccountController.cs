@@ -87,7 +87,7 @@ public class AccountController : ControllerBase
     }
   }
 
-  // POST api/auth/login
+  // POST api/account/login
   [HttpPost]
   [Route("login")]
   [ProducesResponseType(StatusCodes.Status400BadRequest)]

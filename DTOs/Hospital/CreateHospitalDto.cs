@@ -4,6 +4,7 @@ namespace CareFinder.API.DTOs.Hospital;
 
 public class CreateHospitalDto : BaseHospitalDto
 {
+  [Required]
   public string Email { get; set; }
   [Required]
   public string PhoneNumber { get; set; }

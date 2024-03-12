@@ -63,13 +63,13 @@ namespace CareFinder.API.Repository
     {
       _logger.LogInformation($"Looking for user with email: {loginDto.Email}");
 
-      _user = await _userManager.FindByEmailAsync(loginDto.Email);   
+      _user = await _userManager.FindByEmailAsync(loginDto.Email);
       var isValidCredentials = await _userManager.CheckPasswordAsync(_user, loginDto.Password);
 
       if (_user is null || isValidCredentials is false)
       {
         _logger.LogWarning($"User with email {loginDto.Email} was not found");
-        
+
         return null;
       }
 
@@ -137,6 +137,7 @@ namespace CareFinder.API.Repository
                 new Claim(JwtRegisteredClaimNames.Sub, _user.Email),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, _user.Email),
+                new Claim(JwtRegisteredClaimNames.Name, _user.FirstName),
                 new Claim("uid", _user.Id)
             }
       .Union(userClaims).Union(roleClaims);

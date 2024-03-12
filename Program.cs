@@ -19,7 +19,9 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<CareFinderDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("CareFinderDbConnectionString")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("CareFinderDbConnectionString")));
+// builder.Services.AddDbContext<CareFinderDbContext>(options =>
+//     options.UseNpgsql(builder.Configuration.GetConnectionString("CareFinderDbConnectionString")));
 
 builder.Services.AddIdentityCore<ApiUser>()
     .AddRoles<IdentityRole>()
@@ -97,6 +99,7 @@ builder.Services.AddResponseCaching(options =>
 builder.Services.AddControllers().AddOData(options =>
 {
     options.Select().Filter().OrderBy();
+    options.SetMaxTop(15);
 });
 
 var app = builder.Build();

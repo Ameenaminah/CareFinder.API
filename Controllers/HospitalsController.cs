@@ -8,6 +8,14 @@ using Microsoft.AspNetCore.Authorization;
 using CareFinder.API.Exceptions;
 using CareFinder.API.DTOs;
 using Microsoft.AspNetCore.OData.Query;
+using CsvHelper;
+using System.Globalization;
+using iText.Kernel.Pdf;
+using iText.Layout.Element;
+using iText.Layout;
+using iText.Kernel.Exceptions;
+using iText.Layout.Properties;
+using System.Text;
 
 namespace CareFinder.API.Controllers
 {
@@ -25,23 +33,105 @@ namespace CareFinder.API.Controllers
         }
 
         // GET: api/Hospitals
-        [HttpGet("all")]
-        [EnableQuery]
+        [HttpGet]
+        // [EnableQuery]
         public async Task<ActionResult<IEnumerable<GetHospitalDto>>> GetHospitals()
         {
-            var hospitals = await _hospitalsRepository.GetAllAsync();
+            var hospitals = await _hospitalsRepository.GetAllHospitalAsync();
             var records = _mapper.Map<List<GetHospitalDto>>(hospitals);
             return Ok(records);
         }
 
-        // GET: api/Countries/?StartIndex=0&PageSize=12&PageNumber=1
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<GetHospitalDto>>> GetHospitals([FromQuery] QueryParameters queryParameters)
-        {
-            var pagedHospitalsResult = await _hospitalsRepository.GetAllAsync<GetHospitalDto>(queryParameters);
+        // GET: api/Hospitals/?StartIndex=0&PageSize=12&PageNumber=1
+        // [HttpGet("all")]
+        // [EnableQuery]
+        // public async Task<ActionResult<IEnumerable<GetHospitalDto>>> GetHospitals([FromQuery] QueryParameters queryParameters)
+        // {
+        //     var pagedHospitalsResult = await _hospitalsRepository.GetAllAsync<GetHospitalDto>(queryParameters);
 
-            return Ok(pagedHospitalsResult);
+        //     return Ok(pagedHospitalsResult);
+        // }
+
+        [HttpGet("export")]
+        public async Task<IActionResult> ExportCsv()
+        {
+            var hospitals = await _hospitalsRepository.GetAllAsync();
+            var records = _mapper.Map<List<GetHospitalDto>>(hospitals);
+
+            if (records == null || records.Count == 0)
+                return NoContent();
+
+            using (var memoryStream = new MemoryStream())
+            {
+                using (var writer = new StreamWriter(memoryStream))
+                using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+                {
+                    csv.WriteRecords(records);
+                }
+
+                return File(memoryStream.ToArray(), "text/csv", "hospitals.csv");
+            }
         }
+
+        [HttpGet("share")]
+        public IActionResult ExportToPdf()
+        {
+            var hospitals = _hospitalsRepository.GetAllAsync().Result;
+            var records = _mapper.Map<List<GetHospitalDto>>(hospitals);
+
+            if (records == null || records.Count == 0)
+                return NoContent();
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                PdfWriter writer = new PdfWriter(stream);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
+
+                var title = new Paragraph("List of Hospitals")
+                 .SetTextAlignment(TextAlignment.CENTER)
+                 .SetFontSize(20).SetPaddingBottom(20);
+                document.Add(title);
+
+                // Add Table Header
+                var table = new Table(3);
+                table.AddHeaderCell("Number");
+                table.AddHeaderCell("Name");
+                table.AddHeaderCell("Specialization");
+                foreach (var record in records)
+                {
+                    table.AddCell(record.Id.ToString());
+                    table.AddCell(record.Name);
+                    table.AddCell(record.Specialization);
+                }
+                document.Add(table);
+                document.Close();
+
+                // Save the PDF to a file or stream
+                // return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
+
+
+                byte[] pdfBytes = stream.ToArray();
+
+                // Encode the PDF as a Base64 string
+                string base64Pdf = Convert.ToBase64String(pdfBytes);
+
+                // Create mailto link with subject, body, and attached PDF
+                var subject = "List of Hospitals";
+                var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n[Download PDF](data:application/pdf;base64," + Convert.ToBase64String(pdfBytes) + ")";
+
+                // Encode the entire mailto link as a URL-encoded string
+                var mailtoLink = $"mailto:?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
+
+                // // Redirect to the mailto link
+                return Redirect(mailtoLink);
+
+
+            }
+
+
+        }
+
 
         // GET: api/Hospitals/5
         [HttpGet("{id}")]
@@ -59,7 +149,7 @@ namespace CareFinder.API.Controllers
 
         // POST: api/Hospitals
         [HttpPost]
-        // [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "User")]
         public async Task<ActionResult<Hospital>> PostHospital(CreateHospitalDto createHospital)
         {
             if (await _hospitalsRepository.ExistsByNameAsync(createHospital.Name))
@@ -75,12 +165,12 @@ namespace CareFinder.API.Controllers
             Console.WriteLine(hospital.Id);
             Console.WriteLine("Add something");
 
-            return CreatedAtAction("GetHospital", new { id = hospital.Id }, hospital.Id);
+            return CreatedAtAction("GetHospital", new { id = hospital.Id }, hospital);
         }
 
         // PUT: api/Hospitals/5
         [HttpPut("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> PutHospital(int id, UpdateHospitalDto updateHospitalDto)
         {
             if (id != updateHospitalDto.Id)
@@ -116,7 +206,7 @@ namespace CareFinder.API.Controllers
         }
 
         // DELETE: api/Hospitals/5 
-        [HttpDelete("{id}")] 
+        [HttpDelete("{id}")]
         // [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> DeleteHospital(int id)
         {

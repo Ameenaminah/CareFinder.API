@@ -17,4 +17,8 @@ public class HospitalsRepository : GenericRepository<Hospital>, IHospitalsReposi
   {
     return await _context.Hospitals.Include(q => q.Addresses).FirstOrDefaultAsync(q => q.Id == id);
   }
+  public async Task<List<Hospital>> GetAllHospitalAsync()
+  {
+    return await _context.Hospitals.Include(h => h.Addresses).ToListAsync();
+  }
 }

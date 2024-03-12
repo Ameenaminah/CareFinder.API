@@ -4,12 +4,15 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
-    <UserSecretsId>c3566eb7-b293-498e-ab1b-fce308f9e75d</UserSecretsId>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <!-- <UserSecretsId>c3566eb7-b293-498e-ab1b-fce308f9e75d</UserSecretsId> -->
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="CsvHelper" Version="31.0.2" />
+    <PackageReference Include="itext7" Version="8.0.3" />
+    <PackageReference Include="itext7.bouncy-castle-adapter" Version="8.0.3" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
