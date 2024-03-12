@@ -111,21 +111,40 @@ namespace CareFinder.API.Controllers
                 // return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
 
 
+
+
                 byte[] pdfBytes = stream.ToArray();
+                var fileName = "hospitals.pdf";
+                var filePath = Path.Combine(Path.GetTempPath(), fileName);
+
+                System.IO.File.WriteAllBytes(filePath, pdfBytes);
+
+                // Generate a link to the PDF file
+                var pdfLink = Url.Content("~/temp/" + fileName);
 
                 // Encode the PDF as a Base64 string
-                string base64Pdf = Convert.ToBase64String(pdfBytes);
+                // string base64Pdf = Convert.ToBase64String(pdfBytes);
 
                 // Create mailto link with subject, body, and attached PDF
                 var subject = "List of Hospitals";
                 // var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n[Download PDF](data:application/pdf;base64," + Convert.ToBase64String(pdfBytes) + ")";
 
-                var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n";
-                var downloadLink = "data:application/pdf;base64," + base64Pdf;
-                body += "[Download PDF](" + downloadLink + ")";
+                // var body = "Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n";
+                // var downloadLink = "data:application/pdf;base64," + base64Pdf;
+                // body += "[Download PDF](" + downloadLink + ")";
+
+                // // Encode the entire mailto link as a URL-encoded string
+                // var mailtoLink = $"mailto:?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
+
+
+
+               // Adjust the path as needed
 
                 // Encode the entire mailto link as a URL-encoded string
-                var mailtoLink = $"mailto:?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
+                var mailtoLink = $"mailto:?subject={Uri.EscapeDataString("List of Hospitals")}&body={Uri.EscapeDataString($"Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n{pdfLink}")}";
+
+                // Redirect to the mailto link
+                return Redirect(mailtoLink);
 
                 // // Redirect to the mailto link
                 return Redirect(mailtoLink);
