@@ -138,7 +138,7 @@ namespace CareFinder.API.Controllers
 
 
 
-               // Adjust the path as needed
+                // Adjust the path as needed
 
                 // Encode the entire mailto link as a URL-encoded string
                 var mailtoLink = $"mailto:?subject={Uri.EscapeDataString("List of Hospitals")}&body={Uri.EscapeDataString($"Please find the attached list of hospitals.\n\nClick the link below to download the PDF:\n{pdfLink}")}";
@@ -185,7 +185,7 @@ namespace CareFinder.API.Controllers
             Console.WriteLine(hospital.Id);
             Console.WriteLine("Add something");
 
-            return CreatedAtAction("GetHospital", new { id = hospital.Id }, CreateHospitalDto);
+            return CreatedAtAction("GetHospital", new { id = hospital.Id }, hospital);
         }
 
         // PUT: api/Hospitals/5
