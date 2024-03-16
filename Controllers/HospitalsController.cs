@@ -16,6 +16,10 @@ using iText.Layout;
 using iText.Kernel.Exceptions;
 using iText.Layout.Properties;
 using System.Text;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using System;
 
 namespace CareFinder.API.Controllers
 {
@@ -110,25 +114,33 @@ namespace CareFinder.API.Controllers
                 // Save the PDF to a file or stream
                 //return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
 
-                byte[] pdfBytes = stream.ToArray();
+                // byte[] pdfBytes = stream.ToArray();
 
-                // Encode the PDF as a Base64 string
-                string base64Pdf = Convert.ToBase64String(pdfBytes);
+                // // Encode the PDF as a Base64 string
+                // string base64Pdf = Convert.ToBase64String(pdfBytes);
 
-                string downloadLink = $"data:application/pdf;base64,{base64Pdf}";
+                // string downloadLink = $"data:application/pdf;base64,{base64Pdf}";
 
-                // Email Subject containing the download link
-                string subject = "Download Hospitals PDF";
+                // // Email Subject containing the download link
+                // string subject = "Download Hospitals PDF";
 
-                // Email Body
-                string body = "Please find attached the PDF containing the list of hospitals. " +
-                              $"You can also download it directly from the link below:\n\n{downloadLink}";
+                // // Email Body
+                // string body = "Please find attached the PDF containing the list of hospitals. " +
+                //               $"You can also download it directly from the link below:\n\n{downloadLink}";
 
-                // Prepare the mailto URI
-                string mailtoUri = $"mailto:?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
+                // // Prepare the mailto URI
+                // string mailtoUri = $"mailto:?subject={Uri.EscapeDataString(subject)}&body={Uri.EscapeDataString(body)}";
 
-                // Redirect to the mailto URI
-                return Redirect(mailtoUri);
+                // // Redirect to the mailto URI
+                // return Redirect(mailtoUri);
+
+                string fileName = $"hospitals_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs", fileName);
+                System.IO.File.WriteAllBytes(filePath, stream.ToArray());
+
+                // Generate shareable link
+                string url = $"{Request.Scheme}://{Request.Host}/pdfs/{fileName}";
+                return Ok(url);
             }
         }
 
