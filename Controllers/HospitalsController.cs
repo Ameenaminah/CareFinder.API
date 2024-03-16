@@ -78,9 +78,9 @@ namespace CareFinder.API.Controllers
         }
 
         [HttpGet("share")]
-        public IActionResult ExportToPdf()
+        public async Task<IActionResult> ExportToPdf()
         {
-            var hospitals = _hospitalsRepository.GetAllAsync().Result;
+            var hospitals = await _hospitalsRepository.GetAllAsync();
             var records = _mapper.Map<List<GetHospitalDto>>(hospitals);
 
             if (records == null || records.Count == 0)
@@ -134,13 +134,24 @@ namespace CareFinder.API.Controllers
                 // // Redirect to the mailto URI
                 // return Redirect(mailtoUri);
 
-                string fileName = $"hospitals_{DateTime.Now:yyyyMMddHHmmss}.pdf";
-                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs", fileName);
-                System.IO.File.WriteAllBytes(filePath, stream.ToArray());
+                // string fileName = $"hospitals_{DateTime.Now:yyyyMMddHHmmss}.pdf";
+                // var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs", fileName);
+                // System.IO.File.WriteAllBytes(filePath, stream.ToArray());
 
-                // Generate shareable link
-                string url = $"{Request.Scheme}://{Request.Host}/pdfs/{fileName}";
-                return Ok(url);
+                // // Generate shareable link
+                // string url = $"{Request.Scheme}://{Request.Host}/pdfs/{fileName}";
+                // return Ok(url);
+
+                // Save the PDF to a temporary location
+                var pdfFileName = $"hospitals.pdf";
+                var pdfFilePath = Path.Combine(Path.GetTempPath(), pdfFileName);
+                System.IO.File.WriteAllBytes(pdfFilePath, stream.ToArray());
+
+                // Generate the shareable link
+                var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                var shareableLink = $"{baseUrl}/api/Hospitals/share";
+
+                return Ok(new { ShareableLink = shareableLink });
             }
         }
 
