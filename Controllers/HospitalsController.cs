@@ -149,7 +149,7 @@ namespace CareFinder.API.Controllers
 
                 // Generate the shareable link
                 var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                var shareableLink = $"{baseUrl}/api/Hospitals/share";
+                var shareableLink = $"{baseUrl}/api/Hospitals/share/hospitals";
 
                 return Ok(new { ShareableLink = shareableLink });
             }
