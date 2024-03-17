@@ -112,7 +112,7 @@ namespace CareFinder.API.Controllers
                 document.Close();
 
                 // Save the PDF to a file or stream
-                //return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
+                return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
 
                 // byte[] pdfBytes = stream.ToArray();
 
