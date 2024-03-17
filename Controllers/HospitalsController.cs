@@ -112,7 +112,7 @@ namespace CareFinder.API.Controllers
                 document.Close();
 
                 // Save the PDF to a file or stream
-                return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
+                // return File(stream.ToArray(), "application/pdf", "hospitals.pdf");
 
                 // byte[] pdfBytes = stream.ToArray();
 
@@ -144,14 +144,17 @@ namespace CareFinder.API.Controllers
 
                 // Save the PDF to a temporary location
                 var pdfFileName = $"hospitals.pdf";
-                var pdfFilePath = Path.Combine(Path.GetTempPath(), pdfFileName);
+                var pdfFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs", pdfFileName);
                 System.IO.File.WriteAllBytes(pdfFilePath, stream.ToArray());
 
-                // Generate the shareable link
-                var baseUrl = $"{Request.Scheme}://{Request.Host}";
-                var shareableLink = $"{baseUrl}/api/Hospitals/share/hospitals";
+                var downloadLink = Url.Action("DownloadPdf", "Pdf", new { fileName = pdfFileName });
+                return Content($"PDF generated. <a href='{downloadLink}'>Download</a>");
 
-                return Ok(new { ShareableLink = shareableLink });
+                // Generate the shareable link
+                // var baseUrl = $"{Request.Scheme}://{Request.Host}";
+                // var shareableLink = $"{baseUrl}/api/Hospitals/share/hospitals";
+
+                // return Ok(new { ShareableLink = shareableLink });
             }
         }
 
