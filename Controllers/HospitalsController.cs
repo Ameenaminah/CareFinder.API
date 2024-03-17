@@ -229,7 +229,7 @@ namespace CareFinder.API.Controllers
 
         // DELETE: api/Hospitals/5 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> DeleteHospital(int id)
         {
             var hospital = await _hospitalsRepository.GetAsync(id);
