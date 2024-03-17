@@ -144,10 +144,27 @@ namespace CareFinder.API.Controllers
 
                 // Save the PDF to a temporary location
                 var pdfFileName = $"hospitals.pdf";
-                var pdfFilePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "pdfs", pdfFileName);
-                System.IO.File.WriteAllBytes(pdfFilePath, stream.ToArray());
+                var pdfFilePath = Path.Combine(Directory.GetCurrentDirectory(), "pdfs", pdfFileName);
+                if (!Directory.Exists(pdfFilePath))
+                {
+                    Directory.CreateDirectory(pdfFilePath);
+                }
+
+                try
+                {
+                    System.IO.File.WriteAllBytes(pdfFilePath, stream.ToArray());
+
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception
+                    Console.WriteLine($"Error saving PDF: {ex.Message}");
+                    // Handle the error gracefully, perhaps inform the user
+                    return Content("Error generating PDF. Please try again later.");
+                }
 
                 var downloadLink = Url.Action("DownloadPdf", "Pdf", new { fileName = pdfFileName });
+                // return Content($"{downloadLink}");
                 return Content($"PDF generated. <a href='{downloadLink}'>Download</a>");
 
                 // Generate the shareable link
